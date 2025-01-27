@@ -1,0 +1,39 @@
+---
+- name: Security Compliance Automation
+  hosts: all
+  become: yes  # Run tasks with elevated privileges
+
+  tasks:
+    - name: Ensure SSH Protocol Version is 2
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^Protocol'
+        line: 'Protocol 2'
+
+        #    - name: Configure Password Policy
+        #pam_pwquality:
+        #name: password requisite pam_pwquality.so
+        #minlen: 12
+        #maxrepeat: 2
+        #minclass: 4 
+
+    - name: Enable and Start Firewall
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Allow only Necessary Ports in Firewall
+      firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+      loop:
+        - ssh
+        - http
+        - https
+
+    - name: Ensure SELinux is Enforcing
+      selinux:
+        policy: targeted
+        state: enforcing
