@@ -7,6 +7,6 @@
     - name: Restart all services listed
       ansible.builtin.service:
         name: "{{ item }}"
-        state: enabled
+        state: restarted
       loop:
         - httpd
