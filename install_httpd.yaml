@@ -1,0 +1,24 @@
+- name: Install HTTPD 
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Install the webserver
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+      become: yes
+
+    - name: Enable the webserver
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+    
+    - name: Apply firewall rule
+      firewalld:
+        permanent: yes
+        immediate: yes
+        service: http
+        state: enabled
