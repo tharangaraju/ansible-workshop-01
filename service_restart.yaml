@@ -1,0 +1,12 @@
+---
+- name: Service Restart
+  hosts: all
+  become: yes  # Run tasks with elevated privileges
+
+  tasks: 
+    - name: Restart all services listed
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: enabled
+      loop:
+        - httpd
