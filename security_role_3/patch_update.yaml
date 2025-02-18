@@ -1,0 +1,9 @@
+name: patch update
+  hosts: all
+  become: yes  # Run tasks with elevated privileges
+
+  tasks:
+    - name: patch update all
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
