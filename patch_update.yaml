@@ -4,6 +4,6 @@ name: patch update
 
   tasks:
     - name: patch update all
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
         name: "*"
         state: latest
